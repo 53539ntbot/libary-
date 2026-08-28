@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>ระบบยืมค้นหนังสือเด็ก</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/style.css">
+  </head>
+
+  <body>
+    <div class="container">
+  <div class="header">
+    <h1>📚 ระบบยืม-คืนหนังสือ</h1>
+    <p>จัดการข้อมูลการยืมและคืนหนังสือ</p>
+  </div>
+
+  <div class="form-box">
+    <h2>บันทึกการยืมหนังสือ</h2>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="bookName">ชื่อหนังสือ</label>
+        <select id="bookName">
+          <option value="">-- เลือกหนังสือ --</option>
+          <option value="เจ้าชายน้อย">เจ้าชายน้อย</option>
+          <option value="ลูกหมูสามตัว">ลูกหมูสามตัว</option>
+          <option value="หนูน้อยหมวกแดง">หนูน้อยหมวกแดง</option>
+          <option value="สโนว์ไวท์กับคนแคระทั้งเจ็ด">สโนว์ไวท์กับคนแคระทั้งเจ็ด</option>
+          <option value="ซินเดอเรลลา">ซินเดอเรลลา</option>
+          <option value="แจ็คผู้ฆ่ายักษ์">แจ็คผู้ฆ่ายักษ์</option>
+          <option value="กระต่ายกับเต่า">กระต่ายกับเต่า</option>
+          <option value="ราชสีห์กับหนู">ราชสีห์กับหนู</option>
+          <option value="ลูกเป็ดขี้เหร่">ลูกเป็ดขี้เหร่</option>
+          <option value="นิทานอีสป">นิทานอีสป</option>
+          <option value="โลกของไดโนเสาร์">โลกของไดโนเสาร์</option>
+          <option value="วิทยาศาสตร์แสนสนุก">วิทยาศาสตร์แสนสนุก</option>
+          <option value="สารานุกรมสำหรับเด็ก">สารานุกรมสำหรับเด็ก</option>
+          <option value="ผจญภัยในอวกาศ">ผจญภัยในอวกาศ</option>
+          <option value="ความรู้รอบตัวสำหรับเด็ก">ความรู้รอบตัวสำหรับเด็ก</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="studentId">เลขประจำตัวผู้ยืม</label>
+        <input
+          type="text"
+          id="studentId"
+          placeholder="กรอกเลขประจำตัว"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="borrowDate">วันและเวลาที่ยืม</label>
+        <input type="datetime-local" id="borrowDate">
+      </div>
+
+      <div class="form-group">
+        <label for="returnDate">วันครบกำหนดคืน</label>
+        <input type="datetime-local" id="returnDate">
+      </div>
+
+    </div>
+
+    <button id="borrowBtn" onclick="borrowBook()">
+      📖 บันทึกการยืมหนังสือ
+    </button>
+  </div>
+
+
+  <div class="summary">
+    <div class="card">
+      <h3 id="totalBorrow">0</h3>
+      <p>รายการทั้งหมด</p>
+    </div>
+
+    <div class="card">
+      <h3 id="borrowingCount">0</h3>
+      <p>กำลังยืม</p>
+    </div>
+
+    <div class="card">
+      <h3 id="returnedCount">0</h3>
+      <p>คืนแล้ว</p>
+    </div>
+  </div>
+
+
+  <div class="table-box">
+    <div class="table-header">
+      <h2>📋 รายการยืมหนังสือ</h2>
+
+      <button class="delete-all" onclick="deleteAll()">
+        ลบข้อมูลทั้งหมด
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>ลำดับ</th>
+            <th>ชื่อหนังสือ</th>
+            <th>เลขประจำตัวผู้ยืม</th>
+            <th>วันเวลาที่ยืม</th>
+            <th>กำหนดคืน</th>
+            <th>สถานะ</th>
+            <th>จัดการ</th>
+          </tr>
+        </thead>
+
+        <tbody id="bookTable">
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/script.js"></script>
+  </body>
+
+</html>
