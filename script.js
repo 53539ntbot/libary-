@@ -21,7 +21,7 @@ async function borrowBook() {
     }
 
     const { data, error } = await supabase
-        .from('borrows') // ชื่อตารางใน Supabase
+        .from('borrows')
         .insert([
             {
                 book_name: bookName,
@@ -37,7 +37,7 @@ async function borrowBook() {
         alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     } else {
         alert('บันทึกการยืมสำเร็จ');
-        fetchBooks(); // โหลดตารางใหม่
+        fetchBooks();
     }
 }
 
@@ -77,7 +77,6 @@ async function fetchBooks() {
         bookTable.appendChild(row);
     });
 
-    // อัปเดตตัวเลขสรุป
     document.getElementById('totalBorrow').textContent = data.length;
     document.getElementById('borrowingCount').textContent = borrowingCount;
     document.getElementById('returnedCount').textContent = returnedCount;
@@ -104,7 +103,7 @@ async function deleteAll() {
     const { error } = await supabase
         .from('borrows')
         .delete()
-        .neq('id', 0); // ลบทุก row
+        .neq('id', 0);
 
     if (error) {
         console.error('Error deleting data:', error);
@@ -112,4 +111,3 @@ async function deleteAll() {
         fetchBooks();
     }
 }
-displayBooks();
