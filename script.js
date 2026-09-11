@@ -3,6 +3,7 @@ const SUPABASE_URL = "https://rwzupiemmqpxxgrdpofu.supabase.co";
 const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3enVwaWVtbXFweHhncmRwb2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0NDM5OTEsImV4cCI6MjEwMTAxOTk5MX0.wb3nJr5DKCpnOHElfq73xqNTO3Mtj4T7_FX7Od0wWfA";
 
+
 // สร้าง Supabase Client
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -10,10 +11,7 @@ const supabaseClient = window.supabase.createClient(
 );
 
 
-// ==========================================
 // โหลดข้อมูลเมื่อเปิดหน้าเว็บ
-// ==========================================
-
 document.addEventListener("DOMContentLoaded", () => {
     fetchBooks();
 });
@@ -30,7 +28,6 @@ async function borrowBook() {
     const borrowDate = document.getElementById("borrowDate").value;
     const returnDate = document.getElementById("returnDate").value;
 
-    // ตรวจสอบข้อมูล
     if (!bookName || !studentId || !borrowDate || !returnDate) {
         alert("กรุณากรอกข้อมูลให้ครบถ้วน");
         return;
@@ -51,17 +48,14 @@ async function borrowBook() {
     if (error) {
 
         console.error("Error inserting data:", error);
-
         alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
 
     } else {
 
         alert("บันทึกการยืมสำเร็จ");
 
-        // โหลดข้อมูลใหม่
         fetchBooks();
 
-        // ล้างฟอร์ม
         document.getElementById("bookName").value = "";
         document.getElementById("studentId").value = "";
         document.getElementById("borrowDate").value = "";
@@ -71,7 +65,7 @@ async function borrowBook() {
 
 
 // ==========================================
-// ดึงข้อมูลหนังสือมาแสดงในตาราง
+// ดึงข้อมูลมาแสดงในตาราง
 // ==========================================
 
 async function fetchBooks() {
@@ -84,7 +78,6 @@ async function fetchBooks() {
     if (error) {
 
         console.error("Error fetching data:", error);
-
         alert("ไม่สามารถโหลดข้อมูลได้");
 
         return;
@@ -93,7 +86,7 @@ async function fetchBooks() {
     const bookTable = document.getElementById("bookTable");
 
     if (!bookTable) {
-        console.error("ไม่พบ element ที่มี id='bookTable'");
+        console.error("ไม่พบ bookTable");
         return;
     }
 
@@ -103,7 +96,6 @@ async function fetchBooks() {
     let returnedCount = 0;
 
 
-    // ถ้าไม่มีข้อมูล
     if (!data || data.length === 0) {
 
         bookTable.innerHTML = `
@@ -126,41 +118,42 @@ async function fetchBooks() {
                 returnedCount++;
             }
 
-
             const row = document.createElement("tr");
 
             row.innerHTML = `
                 <td>${index + 1}</td>
-
                 <td>${item.book_name || "-"}</td>
-
                 <td>${item.student_id || "-"}</td>
 
                 <td>
-                    ${item.borrow_date
-                        ? new Date(item.borrow_date).toLocaleString("th-TH")
-                        : "-"
+                    ${
+                        item.borrow_date
+                            ? new Date(item.borrow_date)
+                                .toLocaleString("th-TH")
+                            : "-"
                     }
-                </td>
-
-                <td>
-                    ${item.return_date
-                        ? new Date(item.return_date).toLocaleString("th-TH")
-                        : "-"
-                    }
-                </td>
-
-                <td>
-                    ${item.status || "-"}
                 </td>
 
                 <td>
                     ${
+                        item.return_date
+                            ? new Date(item.return_date)
+                                .toLocaleString("th-TH")
+                            : "-"
+                    }
+                </td>
+
+                <td>${item.status || "-"}</td>
+
+                <td>
+                    ${
                         item.status === "กำลังยืม"
-                            ? `<button onclick="returnBook('${item.id}')">
+                            ? `
+                                <button onclick="returnBook('${item.id}')">
                                     คืนหนังสือ
-                               </button>`
-                            : `<span>คืนแล้ว</span>`
+                                </button>
+                              `
+                            : "คืนแล้ว"
                     }
                 </td>
             `;
@@ -206,11 +199,9 @@ async function returnBook(id) {
         })
         .eq("id", id);
 
-
     if (error) {
 
         console.error("Error updating status:", error);
-
         alert("เกิดข้อผิดพลาดในการคืนหนังสือ");
 
     } else {
@@ -237,11 +228,9 @@ async function deleteAll() {
         .delete()
         .neq("id", 0);
 
-
     if (error) {
 
         console.error("Error deleting data:", error);
-
         alert("เกิดข้อผิดพลาดในการลบข้อมูล");
 
     } else {
